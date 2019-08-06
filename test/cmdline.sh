@@ -29,4 +29,17 @@ $srcdir/src/main.js download-entity-values -d entities --manifest entities.tsv
 
 $srcdir/src/main.js download-templates -o templates.tt
 
+# init commands
+
+$srcdir/src/main.js init-project my-awesome-devices
+
+cd my-awesome-devices
+$srcdir/src/main.js init-device com.foo
+$srcdir/src/main.js init-device --loader org.thingpedia.generic_rest.v1 com.foo.generic_rest
+
+make
+#yarn test
+test -f com.foo.zip
+
+cd $oldpwd
 rm -rf $workdir

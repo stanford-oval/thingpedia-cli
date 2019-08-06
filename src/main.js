@@ -26,7 +26,10 @@ const subcommands = {
     'download-snapshot': require('./download-snapshot'),
     'download-templates': require('./download-templates'),
     'download-entities': require('./download-entities'),
-    'download-entity-values': require('./download-entity-values')
+    'download-entity-values': require('./download-entity-values'),
+
+    'init-project': require('./init-project'),
+    'init-device': require('./init-device')
 };
 
 async function main() {
