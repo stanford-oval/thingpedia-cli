@@ -1,0 +1,30 @@
+{
+  "name": "thingpedia-cli",
+  "version": "0.1.0",
+  "description": "A command line client to interact with Thingpedia",
+  "bin": {
+    "thingpedia": "src/tool.js"
+  },
+  "repository": "https://github.com/stanford-oval/thingpedia-cli",
+  "author": "Giovanni Campagna <gcampagn@cs.stanford.edu>",
+  "license": "GPL-3.0+",
+  "dependencies": {
+    "argparse": "^1.0.10",
+    "gettext-parser": "^4.0.1",
+    "node-gettext": "^2.0.0",
+    "thingpedia": "github:stanford-oval/thingpedia-api"
+  },
+  "scripts": {
+    "update-pot": "xgettext -f po/POTFILES -x po/POTFILES.skip -o po/${npm_package_name}.pot --from-code UTF-8 --package-name ${npm_package_name} --package-version ${npm_package_version}",
+    "update-po": "for i in po/*.po ; do msgmerge -U $i po/${npm_package_name}.pot ; done",
+    "lint": "eslint ./src",
+    "test": "nyc ./test/everything.sh",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "prepare": "for i in po/*.po ; do msgfmt $i ; done"
+  },
+  "devDependencies": {
+    "coveralls": "^3.0.5",
+    "eslint": "^6.1.0",
+    "nyc": "^14.1.1"
+  }
+}

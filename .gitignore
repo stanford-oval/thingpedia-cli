@@ -1,0 +1,14 @@
+*~
+.DS_Store
+node_modules/
+coverage/
+.nyc_output/
+po/thingpedia-cli.pot
+po/*.mo
+po/*.json
+.idea/
+yarn-error.log
+
+*.tgz
+*.tsv
+*.py

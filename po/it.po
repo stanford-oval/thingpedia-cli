@@ -1,0 +1,22 @@
+# Italian translations for thingpedia-cli package.
+# Copyright (C) 2019 The Board of Trustees of the Leland Stanford Junior University
+# This file is distributed under the same license as the thingpedia-cli package.
+# Giovanni Campagna <gcampagn@cs.stanford.edu>, 2019.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: thingpedia-cli 0.1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2019-08-05 20:55-0700\n"
+"PO-Revision-Date: 2019-08-05 20:56-0700\n"
+"Last-Translator: Giovanni Campagna <gcampagn@cs.stanford.edu>\n"
+"Language-Team: Italian\n"
+"Language: it\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=ASCII\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: src/main.js:29
+msgid "A tool to interact with the Thingpedia open API repository."
+msgstr "Uno strumento per interagire con il repository di API Thingpedia."
