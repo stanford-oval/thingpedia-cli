@@ -18,4 +18,15 @@ cd $workdir
 
 $srcdir/src/main.js --help
 
+# download commands
+
+$srcdir/src/main.js download-snapshot -o thingpedia.tt
+$srcdir/src/main.js download-snapshot -o thingpedia8.tt --snapshot 8
+diff -u thingpedia8.tt $srcdir/test/data/expected-thingpedia8.tt
+
+$srcdir/src/main.js download-entities -o entities.json
+$srcdir/src/main.js download-entity-values -d entities --manifest entities.tsv
+
+$srcdir/src/main.js download-templates -o templates.tt
+
 rm -rf $workdir

@@ -49,6 +49,7 @@ function init() {
     }
     gt.textdomain('thingpedia-cli');
     gt.setLocale(locale);
+    module.exports.locale = locale;
 
     // prebind the gt for ease of use, because the usual gettext API is not object-oriented
     module.exports.gettext = module.exports._ = gt.gettext.bind(gt);

@@ -17,9 +17,17 @@ require('thingpedia');
 
 const argparse = require('argparse');
 
-const I18n = require('./i18n');
+const I18n = require('./lib/i18n');
+const Config = require('./lib/config');
 
-const subcommands = {};
+const DEFAULT_THINGPEDIA_URL = 'https://thingpedia.stanford.edu/thingpedia';
+
+const subcommands = {
+    'download-snapshot': require('./download-snapshot'),
+    'download-templates': require('./download-templates'),
+    'download-entities': require('./download-entities'),
+    'download-entity-values': require('./download-entity-values')
+};
 
 async function main() {
     I18n.init();
@@ -29,11 +37,31 @@ async function main() {
         description: I18n._("A tool to interact with the Thingpedia open API repository.")
     });
 
+    parser.addArgument('--url', {
+        required: false,
+        dest: 'thingpedia_url',
+        help: `Base URL of Thingpedia server to contact; defaults to as configured in git, or ${DEFAULT_THINGPEDIA_URL}`
+    });
+    parser.addArgument(['-l', '--locale'], {
+        required: false,
+        defaultValue: 'en-US',
+        help: `BGP 47 tag of the locale to use when querying Thingpedia`
+    });
+    parser.addArgument('--developer-key', {
+        required: false,
+        help: `Developer key to use when contacting Thingpedia`
+    });
+
     const subparsers = parser.addSubparsers({ title: 'Available sub-commands', dest: 'subcommand' });
     for (let subcommand in subcommands)
         subcommands[subcommand].initArgparse(subparsers);
 
     const args = parser.parseArgs();
+    if (!args.thingpedia_url)
+        args.thingpedia_url = await Config.get('thingpedia.url', DEFAULT_THINGPEDIA_URL);
+    if (!args.developer_key)
+        args.developer_key = await Config.get('thingpedia.developer-key', null);
+
     await subcommands[args.subcommand].execute(args);
 }
 main();
