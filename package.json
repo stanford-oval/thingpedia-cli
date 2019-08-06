@@ -21,7 +21,7 @@
     "lint": "eslint ./src",
     "test": "nyc ./test/everything.sh",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
-    "prepare": "for i in po/*.po ; do msgfmt $i ; done"
+    "prepare": "for i in po/*.po ; do msgfmt -o po/$(basename $i .po).mo $i ; done"
   },
   "devDependencies": {
     "coveralls": "^3.0.5",
