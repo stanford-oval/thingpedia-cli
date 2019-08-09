@@ -27,6 +27,8 @@ const subcommands = {
     'download-templates': require('./download-templates'),
     'download-entities': require('./download-entities'),
     'download-entity-values': require('./download-entity-values'),
+    'download-strings': require('./download-strings'),
+    'download-string-values': require('./download-string-values'),
 
     'init-project': require('./init-project'),
     'init-device': require('./init-device')

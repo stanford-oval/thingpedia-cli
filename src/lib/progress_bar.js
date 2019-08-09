@@ -31,6 +31,9 @@ module.exports = class ProgressBar {
     }
 
     update(current, values=[], exact=[]) {
+        if (this.seen_so_far >= this.target)
+            return;
+
         for (let [k, v] of values) {
             if (!(k in this.sum_values)) {
                 this.sum_values[k] = [v * (current - this.seen_so_far), current - this.seen_so_far];
