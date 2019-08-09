@@ -1,0 +1,7 @@
+name: Test
+description: test
+subcategory: service
+license: BSD-3-Clause
+license_gplcompatible: true
+repository: https://github.com/stanford-oval/thingpedia-common-devices
+issue_tracker: https://github.com/stanford-oval/thingpedia-common-devices/issues

@@ -1,0 +1,12 @@
+class @com.test
+#_[name="Test"]
+#_[description="test"]
+#[license="BSD-3-Clause"]
+#[license_gplcompatible=true]
+#[subcategory="service"]
+#[repository="https://github.com/stanford-oval/thingpedia-common-devices"]
+#[issue_tracker="https://github.com/stanford-oval/thingpedia-common-devices/issues"]
+{
+  import loader from @org.thingpedia.v2();
+  import config from @org.thingpedia.config.none();
+}

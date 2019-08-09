@@ -31,7 +31,9 @@ const subcommands = {
     'download-string-values': require('./download-string-values'),
 
     'init-project': require('./init-project'),
-    'init-device': require('./init-device')
+    'init-device': require('./init-device'),
+
+    'upload-device': require('./upload-device')
 };
 
 async function main() {
@@ -56,6 +58,10 @@ async function main() {
         required: false,
         help: `Developer key to use when contacting Thingpedia`
     });
+    parser.addArgument('--access-token', {
+        required: false,
+        help: `OAuth access token to use when contacting Thingpedia`
+    });
 
     const subparsers = parser.addSubparsers({ title: 'Available sub-commands', dest: 'subcommand' });
     for (let subcommand in subcommands)
@@ -66,7 +72,14 @@ async function main() {
         args.thingpedia_url = await Config.get('thingpedia.url', DEFAULT_THINGPEDIA_URL);
     if (!args.developer_key)
         args.developer_key = await Config.get('thingpedia.developer-key', null);
+    if (!args.access_token)
+        args.access_token = await Config.get('thingpedia.access-token', null);
 
-    await subcommands[args.subcommand].execute(args);
+    try {
+        await subcommands[args.subcommand].execute(args);
+    } catch(e) {
+        console.error(e);
+        process.exit(1);
+    }
 }
 main();
