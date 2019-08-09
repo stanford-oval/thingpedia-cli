@@ -69,11 +69,11 @@ async function main() {
 
     const args = parser.parseArgs();
     if (!args.thingpedia_url)
-        args.thingpedia_url = await Config.get('thingpedia.url', DEFAULT_THINGPEDIA_URL);
+        args.thingpedia_url = await Config.get('thingpedia.url', process.env.THINGPEDIA_URL || DEFAULT_THINGPEDIA_URL);
     if (!args.developer_key)
-        args.developer_key = await Config.get('thingpedia.developer-key', null);
+        args.developer_key = await Config.get('thingpedia.developer-key', process.env.THINGPEDIA_DEVELOPER_KEY || null);
     if (!args.access_token)
-        args.access_token = await Config.get('thingpedia.access-token', null);
+        args.access_token = await Config.get('thingpedia.access-token', process.env.THINGPEDIA_ACCESS_TOKEN || null);
 
     try {
         await subcommands[args.subcommand].execute(args);

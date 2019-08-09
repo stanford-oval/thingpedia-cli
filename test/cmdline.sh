@@ -50,8 +50,6 @@ make
 test -f com.foo.zip
 test -f com.test.zip
 
-git config thingpedia.access-token "${THINGPEDIA_ACCESS_TOKEN}"
-
 # skip the test if we don't have a token
 if test -n "${THINGPEDIA_ACCESS_TOKEN}" ; then
 	$srcdir/src/main.js upload-device \
