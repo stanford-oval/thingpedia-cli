@@ -1,4 +1,4 @@
-dist: 'xenial'
+dist: xenial
 branches:
   except:
   - "/^wip/"
@@ -12,3 +12,11 @@ script:
 - yarn lint
 - TZ="America/Los_Angeles" yarn test
 after_success: yarn run coverage
+deploy:
+  provider: npm
+  email: gcampagn@cs.stanford.edu
+  api_key:
+    secure: XEdNjGKLjs5KRK4tSUlIKLhYgXHT1lNr9h222YL21Ew+W1MzzT967jC+ina9IRQlpqC4oWUpBHdW5bORYGTrw5xHRrR1m12PqWZnbjMqBMTIVnHyMqirEa9Y36vLM6+Us+Ytc3UCAwq2hHwfCcPZjy7omC0sI4Tr2Gx7SEJbCiXybqNMG9iQJcZydmAyVesyhPpW3lmu0Tmy8kdUqQ9EiU44ICnfbtLu1klN0h17kLg93e3YQ4Dp+Y/y/j6GBOMfGx9aL/VC251AJmwQ9lKr2WS1MH6WdrojRzbKSZpisgGZH5+zPGc37xheALzymagBEXa0sE9AM1zGGHYscK6W/chmf+iPS4f3md4xd46npERAzEWtf6j7ivkUTT9ER2e0b5mxm1krwG8Kov2I7yU+gqTnTz9n/wPt4HTRB9AgPKobD+WNrnW8enZj3JAXFlFgAj7AB/hlZ4YyZg0Q2lIkDq+2sij0Gl7Q/HOJy7cv68KLE6wip6EMpN2tfU+CckGgUQZa3hodlpJyf/ZojN/q0Qvy7C+HlCah8OIPuL7b42Ux22jyh3k61ijgt8Te01tXMnPBS6G4imP44RV3Xexl6otOYqW446FBvaJXAUsosdDSrPed5R4iqZ+ifMLWJpapxh8TJ8LzcMHtCZQ8l7g6vcTYM4KgngMln+/hAC9cmP8=
+  on:
+    tags: true
+    repo: stanford-oval/thingpedia-cli
