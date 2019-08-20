@@ -13,7 +13,7 @@ const Tp = require('thingpedia');
 const fs = require('fs');
 const path = require('path');
 const util = require('util');
-const csv = require('csv');
+const csvstringify = require('csv-stringify');
 const JSONStream = require('JSONStream');
 
 const StreamUtils = require('./lib/stream-utils');
@@ -108,7 +108,7 @@ module.exports = {
 
             stream
             .pipe(JSONStream.parse('data.*'))
-            .pipe(csv.stringify({ columns: ['value', 'preprocessed', 'weight'], delimiter:'\t', header: false }))
+            .pipe(csvstringify({ columns: ['value', 'preprocessed', 'weight'], delimiter:'\t', header: false }))
             .pipe(output);
             await StreamUtils.waitFinish(output);
 

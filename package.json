@@ -11,7 +11,7 @@
   "dependencies": {
     "JSONStream": "^1.3.5",
     "argparse": "^1.0.10",
-    "csv": "^5.1.1",
+    "csv-stringify": "^5.3.3",
     "form-data": "^2.5.0",
     "gettext-parser": "^4.0.1",
     "lice-js": "^0.2.0",
