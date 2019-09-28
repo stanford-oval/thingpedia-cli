@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "A command line client to interact with Thingpedia",
   "bin": {
-    "thingpedia": "src/tool.js"
+    "thingpedia": "src/main.js"
   },
   "repository": "https://github.com/stanford-oval/thingpedia-cli",
   "author": "Giovanni Campagna <gcampagn@cs.stanford.edu>",
