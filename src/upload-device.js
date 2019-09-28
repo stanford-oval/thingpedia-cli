@@ -32,7 +32,7 @@ module.exports = {
             help: "Icon file to upload."
         });
         parser.addArgument('--manifest', {
-            required: false,
+            required: true,
             help: "ThingTalk class definition file."
         });
         parser.addArgument('--dataset', {
@@ -50,7 +50,12 @@ module.exports = {
             throw new Error(`You must pass a valid OAuth access token to talk to Thingpedia`);
 
         const manifest = await util.promisify(fs.readFile)(args.manifest, { encoding: 'utf8' });
-        const parsed = ThingTalk.Grammar.parse(manifest);
+        let parsed;
+        try {
+            parsed = ThingTalk.Grammar.parse(manifest);
+        } catch(e) {
+            throw new Error(`Error parsing manifest.tt: ${e.message}`);
+        }
         if (!parsed.isLibrary || parsed.classes.length !== 1)
             throw new Error(`The manifest file must contain exactly one class definition`);
 
@@ -88,9 +93,13 @@ module.exports = {
                 fd.append(annot, classDef.annotations[annot].toJS());
         }
 
+        const dataset = await util.promisify(fs.readFile)(args.dataset, { encoding: 'utf8' });
+        // sanitiy check it locally
+        ThingTalk.Grammar.parse(dataset);
+
         fd.append('code', manifest);
-        fd.append('dataset', await util.promisify(fs.readFile)(args.dataset, { encoding: 'utf8' }));
-        if (args.approved)
+        fd.append('dataset', dataset);
+        if (args.approve)
             fd.append('approve', '1');
 
         for (let key of ['zipfile', 'icon']) {
