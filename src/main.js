@@ -33,7 +33,8 @@ const subcommands = {
     'init-project': require('./init-project'),
     'init-device': require('./init-device'),
 
-    'upload-device': require('./upload-device')
+    'upload-device': require('./upload-device'),
+    'upload-string-values': require('./upload-string-values')
 };
 
 async function main() {
