@@ -44,21 +44,25 @@ module.exports = {
         });
     },
 
-    async createUpload(args) {
+    createUpload(args) {
         const fd = new FormData();
-        if (args.csv) {
-            fd.append('upload', fs.createReadStream(args.csv), {
-                filename: 'entity.csv',
-                contentType: 'text/csv;charset=utf8'
-            });
-        } else if (args.json) {
-            const json = JSON.parse(fs.readFileSync(args.json, 'utf8'));
-            const csv = json.data.map((row) => [row.value, row.name]);
-            const string = csvstringify(csv, {  delimiter:',' });
-            fd.append('upload', string, {
-                filename: 'entity.csv',
-                contentType: 'text/csv;charset=utf8'
-            });
+        if (args.no_ner_support !== '1') {
+            if (args.csv) {
+                fd.append('upload', fs.createReadStream(args.csv), {
+                    filename: 'entity.csv',
+                    contentType: 'text/csv;charset=utf8'
+                });
+            } else if (args.json) {
+                const json = JSON.parse(fs.readFileSync(args.json, 'utf8'));
+                const csv = json.data.map((row) => [row.value, row.name]);
+                const string = csvstringify(csv, {delimiter: ','});
+                fd.append('upload', string, {
+                    filename: 'entity.csv',
+                    contentType: 'text/csv;charset=utf8'
+                });
+            } else {
+                throw new Error(`Either a json file or a csv file is needed.`);
+            }
         }
         for (let key of ['entity_id', 'entity_name', 'no_ner_support'])
             fd.append(key, args[key]);
@@ -70,13 +74,10 @@ module.exports = {
             throw new Error(`You must pass a valid OAuth access token to talk to Thingpedia`);
 
         args.no_ner_support = args.no_ner_support ? '1' : '';
-        const fd = await this.createUpload(args);
+        const fd = this.createUpload(args);
         await Tp.Helpers.Http.postStream(args.thingpedia_url + '/api/v3/entities/create', fd, {
             dataContentType:  'multipart/form-data; boundary=' + fd.getBoundary(),
-            extraHeaders: {
-                Authorization: 'Bearer ' + args.access_token
-            },
-            useOAuth2: true
+            auth: 'Bearer ' + args.access_token
         });
 
         console.log('Success!');

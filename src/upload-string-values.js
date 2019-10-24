@@ -19,8 +19,7 @@ module.exports = {
             addHelp: true,
             description: "Upload a string value dataset to Thingpedia."
         });
-        parser.addArgument('--file', {
-            required: true,
+        parser.addArgument('input_file', {
             help: "The .tsv file of the string values to upload."
         });
         parser.addArgument('--type-name', {
@@ -33,6 +32,7 @@ module.exports = {
         });
         parser.addArgument('--license', {
             required: false,
+            choices: ['public-domain', 'free-permissive', 'free-copyleft', 'non-commercial', 'proprietary'],
             defaultValue: "public-domain",
             help: "The license of the string dataset."
         });
@@ -44,9 +44,12 @@ module.exports = {
         });
     },
 
-    async createUpload(args) {
+    createUpload(args) {
         const fd = new FormData();
-        fd.append('upload', fs.createReadStream(args.file), { file: 'strings.tsv', contentType: 'text/csv;charset=utf8' });
+        fd.append('upload', fs.createReadStream(args.input_file), {
+            filename: 'strings.tsv',
+            contentType: 'text/tab-separated-values;charset=utf8'
+        });
         for (let key of ['type_name', 'name', 'license', 'preprocessed'])
             fd.append(key, args[key]);
         return fd;
@@ -57,13 +60,10 @@ module.exports = {
             throw new Error(`You must pass a valid OAuth access token to talk to Thingpedia`);
 
         args.preprocessed = args.preprocessed ? '1' : '';
-        const fd = await this.createUpload(args);
+        const fd = this.createUpload(args);
         await Tp.Helpers.Http.postStream(args.thingpedia_url + '/api/v3/strings/upload', fd, {
             dataContentType:  'multipart/form-data; boundary=' + fd.getBoundary(),
-            extraHeaders: {
-                Authorization: 'Bearer ' + args.access_token
-            },
-            useOAuth2: true
+            auth: 'Bearer ' + args.access_token
         });
 
         console.log('Success!');
