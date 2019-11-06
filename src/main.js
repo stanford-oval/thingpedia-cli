@@ -35,7 +35,9 @@ const subcommands = {
 
     'upload-device': require('./upload-device'),
     'upload-string-values': require('./upload-string-values'),
-    'upload-entity-values': require('./upload-entity-values')
+    'upload-entity-values': require('./upload-entity-values'),
+
+    'lint-device': require('./lint-device')
 };
 
 async function main() {
