@@ -107,7 +107,7 @@ function validateDevice(classDef) {
     });
 }
 
-function validateDataset(dataset) {
+function validateDataset(dataset, kind) {
     const names = new Set;
     dataset.examples.forEach((ex, i) => {
         try {
@@ -115,6 +115,16 @@ function validateDataset(dataset) {
 
             // try and convert to NN
             ThingTalk.NNSyntax.toNN(ruleprog, {});
+
+            let foundOurDevice = false;
+            for (let [, prim] of ex.iteratePrimitives()) {
+                if (prim.selector.isDevice && prim.selector.kind === kind) {
+                    foundOurDevice = true;
+                    break;
+                }
+            }
+            if (!foundOurDevice)
+                warning(`Example ${i+1} does not use any function from this device`);
 
             // validate placeholders in all utterances
             if (ex.utterances.length === 0) {
@@ -250,7 +260,7 @@ module.exports = {
         const [classDef, dataset] = await loadClassDef(args, manifestCode, datasetCode);
 
         validateDevice(classDef);
-        validateDataset(dataset);
+        validateDataset(dataset, classDef.kind);
 
         if (_anyError)
             throw new Error(`Some errors occurred`);
