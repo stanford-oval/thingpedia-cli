@@ -28,7 +28,7 @@
     "prepare": "for i in po/*.po ; do msgfmt -o po/$(basename $i .po).mo $i ; done"
   },
   "devDependencies": {
-    "coveralls": "^3.0.5",
+    "coveralls": "3.0.8",
     "eslint": "^6.1.0",
     "nyc": "^14.1.1"
   }
