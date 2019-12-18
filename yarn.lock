@@ -390,10 +390,10 @@ cross-spawn@^6.0.5:
     shebang-command "^1.2.0"
     which "^1.2.9"
 
-csv-stringify@^5.3.3:
-  version "5.3.3"
-  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-5.3.3.tgz#c4725686a33db9f61e70d87af712285baefebe21"
-  integrity sha512-q8Qj+/lN74LRmG7Mg0LauE5WcnJOD5MEGe1gI57IYJCB61KWuEbAFHm1uIPDkI26aqElyBB57SlE2GGwq2EY5A==
+csv-stringify@^5.3.5:
+  version "5.3.5"
+  resolved "https://registry.yarnpkg.com/csv-stringify/-/csv-stringify-5.3.5.tgz#fd1f4008741c77c35870705e45b6ab6bb0671f3c"
+  integrity sha512-bFbaJqz7LcwnTzdryyJuhR6Pys2deU8+z7O8N0JBnNGm7vnJVr3K0n68bhb+rlMpwCmDbUtinr8yq5I2RlPMqw==
 
 dashdash@^1.12.0:
   version "1.14.1"
