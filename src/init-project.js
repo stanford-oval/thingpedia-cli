@@ -102,12 +102,23 @@ module.exports = {
         if (args.developer_key)
             await execCommand(['git', 'config', 'thingpedia.developer-key', args.developer_key], { cwd: args.output_dir });
 
-        await execCommand(['sed', '-i',
+        if (process.platform === 'darwin') {
+            await execCommand(['sed', '-i', '.backup',
             '-e', `s|@@name@@|${name}|`,
             '-e', `s|@@description@@|${args.description}|`,
             '-e', `s|@@author@@|${args.author}|`,
             '-e', `s|@@license@@|${args.license}|`,
             path.resolve(args.output_dir, 'package.json')]);
+            await execCommand(['rm', path.resolve(args.output_dir, 'package.json.backup')]);
+        }
+        else {
+            await execCommand(['sed', '-i',
+            '-e', `s|@@name@@|${name}|`,
+            '-e', `s|@@description@@|${args.description}|`,
+            '-e', `s|@@author@@|${args.author}|`,
+            '-e', `s|@@license@@|${args.license}|`,
+            path.resolve(args.output_dir, 'package.json')]);
+        }
 
         const licenseFD = await util.promisify(fs.open)(path.resolve(args.output_dir, 'LICENSE'), 'w');
         await execCommand(['licejs',
