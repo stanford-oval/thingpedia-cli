@@ -1,3 +1,11 @@
+0.2.1
+=====
+
+* Extended lint to warn for suspicious primitive templates that
+  do not use any function from the device.
+* Fixed initializing projects on Mac OS and other BSD systems [#13].
+* Updated dependencies [#12].
+
 0.2.0
 =====
 
