@@ -109,7 +109,7 @@ module.exports = {
             '-e', `s|@@author@@|${args.author}|`,
             '-e', `s|@@license@@|${args.license}|`,
             path.resolve(args.output_dir, 'package.json')]);
-            await execCommand(['rm', path.resolve(args.output_dir, 'package.json.backup')])
+            await execCommand(['rm', path.resolve(args.output_dir, 'package.json.backup')]);
         }
         else {
             await execCommand(['sed', '-i',
@@ -119,7 +119,7 @@ module.exports = {
             '-e', `s|@@license@@|${args.license}|`,
             path.resolve(args.output_dir, 'package.json')]);
         }
-        
+
         const licenseFD = await util.promisify(fs.open)(path.resolve(args.output_dir, 'LICENSE'), 'w');
         await execCommand(['licejs',
             '-o', args.author,
