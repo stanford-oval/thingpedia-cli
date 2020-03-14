@@ -13,7 +13,7 @@
     "argparse": "^1.0.10",
     "csv-stringify": "^5.3.3",
     "form-data": "^3.0.0",
-    "gettext-parser": "^4.0.1",
+    "gettext-parser": "^4.0.3",
     "lice-js": "^0.2.0",
     "mime": "^2.4.4",
     "node-gettext": "^2.0.0",
