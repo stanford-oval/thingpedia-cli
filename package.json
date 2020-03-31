@@ -16,7 +16,7 @@
     "gettext-parser": "^4.0.1",
     "lice-js": "^0.2.0",
     "mime": "^2.4.4",
-    "node-gettext": "^2.0.0",
+    "node-gettext": "2.0.0",
     "thingpedia": "^2.5.0"
   },
   "scripts": {
