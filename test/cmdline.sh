@@ -29,8 +29,8 @@ git config thingpedia.developer-key 88c03add145ad3a3aa4074ffa828be5a391625f9d4e1
 # download commands
 
 $srcdir/src/main.js download-snapshot -o thingpedia.tt
-$srcdir/src/main.js --url https://almond.stanford.edu/thingpedia download-snapshot -o thingpedia8.tt --snapshot 8
-diff -u thingpedia8.tt $srcdir/test/data/expected-thingpedia8.tt
+$srcdir/src/main.js --url https://almond.stanford.edu/thingpedia download-snapshot -o thingpedia12.tt --snapshot 12
+diff -u thingpedia12.tt $srcdir/test/data/expected-thingpedia12.tt
 $srcdir/src/main.js download-templates -o templates.tt
 
 $srcdir/src/main.js download-entities -o entities.json
