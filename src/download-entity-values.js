@@ -89,7 +89,7 @@ module.exports = {
             const output = fs.createWriteStream(outputpath);
 
             if (manifest)
-                manifest.write(`entity\t${type}\t${path.relative(path.dirname(args.manifest), outputpath)}\n`);
+                manifest.write(`entity\t${args.locale}\t${type}\t${path.relative(path.dirname(args.manifest), outputpath)}\n`);
 
             (await Tp.Helpers.Http.getStream(url)).pipe(output);
             await StreamUtils.waitFinish(output);

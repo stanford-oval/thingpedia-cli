@@ -91,7 +91,7 @@ module.exports = {
             const output = fs.createWriteStream(outputpath);
 
             if (manifest)
-                manifest.write(`string\t${type}\t${path.relative(path.dirname(args.manifest), outputpath)}\n`);
+                manifest.write(`string\t${args.locale}\t${type}\t${path.relative(path.dirname(args.manifest), outputpath)}\n`);
 
             const stream = await Tp.Helpers.Http.getStream(url);
 
