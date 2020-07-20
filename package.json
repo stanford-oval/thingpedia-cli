@@ -1,6 +1,6 @@
 {
   "name": "thingpedia-cli",
-  "version": "0.4.0",
+  "version": "0.5.0-beta.1",
   "description": "A command line client to interact with Thingpedia",
   "bin": {
     "thingpedia": "src/main.js"

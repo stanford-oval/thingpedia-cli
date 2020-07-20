@@ -1,3 +1,9 @@
+0.5.0-beta.1
+============
+
+* The tool is now licensed under the Apache 2.0 license [#36].
+* Updated dependencies [#31, #35].
+
 0.4.0
 =====
 
