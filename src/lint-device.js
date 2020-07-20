@@ -202,11 +202,6 @@ function validateInvocation(kind, where, what, entities, stringTypes, options = 
         if (fndef.annotations.confirm) {
             if (!where[name].annotations.confirm.isBoolean)
                 error(`Invalid #[confirm] annotation for ${name}, must be a Boolean`);
-        } else {
-            if (what === 'query')
-                fndef.annotations.confirm = ThingTalk.Ast.Value.Boolean(false);
-            else
-                fndef.annotations.confirm = ThingTalk.Ast.Value.Boolean(true);
         }
         if (options.checkPollInterval && what === 'query' && where[name].is_monitorable) {
             if (!fndef.annotations.poll_interval)
