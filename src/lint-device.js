@@ -79,7 +79,7 @@ async function loadClassDef(args, classCode, datasetCode) {
     if (parsed.datasets.length > 0 && parsed.datasets[0].language !== 'en')
         error("The dataset must be for English: use `en` as the language tag.");
     const dataset = parsed.datasets.length > 0 ? parsed.datasets[0] :
-        new ThingTalk.Ast.Dataset('@' + parsed.classes[0].kind, 'en', [], {});
+        new ThingTalk.Ast.Dataset(null, '@' + parsed.classes[0].kind, 'en', [], {});
 
     return [classDef, dataset];
 }
@@ -109,7 +109,7 @@ function validateDevice(classDef) {
         if (!classDef.loader)
             error("loader mixin missing from class declaration");
         if (!classDef.config)
-            classDef.imports.push(new ThingTalk.Ast.ImportStmt.Mixin(['config'], 'org.thingpedia.config.none', []));
+            classDef.imports.push(new ThingTalk.Ast.ImportStmt.Mixin(null, ['config'], 'org.thingpedia.config.none', []));
     }
 
     validateAllInvocations(classDef, {
@@ -216,7 +216,7 @@ function validateInvocation(kind, where, what, entities, stringTypes, options = 
         if (options.checkPollInterval && what === 'query' && where[name].is_monitorable) {
             if (!fndef.annotations.poll_interval)
                 error(`Missing poll interval for monitorable query ${name}`);
-            if (fndef.annotations.poll_interval.toJS() < 0)
+            else if (fndef.annotations.poll_interval.toJS() < 0)
                 error(`Invalid negative poll interval for monitorable query ${name}`);
         }
 
