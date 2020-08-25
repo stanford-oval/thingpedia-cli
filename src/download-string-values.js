@@ -31,38 +31,36 @@ const ProgressBar = require('./lib/progress_bar');
 
 module.exports = {
     initArgparse(subparsers) {
-        const parser = subparsers.addParser('download-string-values', {
-            addHelp: true,
+        const parser = subparsers.add_parser('download-string-values', {
+            add_help: true,
             description: "Download one or more string dataset from Thingpedia."
         });
-        parser.addArgument(['-d', '--output-dir'], {
+        parser.add_argument('-d', '--output-dir', {
             required: true,
         });
-        parser.addArgument('--type', {
+        parser.add_argument('--type', {
             required: false,
             action: 'append',
-            defaultValue: [],
+            default: [],
             help: `identifier of the Thingpedia string datasets to download (if omitted, all string datasets are downloaded)`
         });
-        parser.addArgument('--manifest', {
+        parser.add_argument('--manifest', {
             required: false,
             help: `write a parameter dataset manifest to this location (suitable for Genie)`
         });
-        parser.addArgument('--append-manifest', {
+        parser.add_argument('--append-manifest', {
             required: false,
-            action: 'storeTrue',
+            action: 'store_true',
             help: `append to the manifest instead of replacing`
         });
 
-        parser.addArgument('--debug', {
-            nargs: 0,
-            action: 'storeTrue',
+        parser.add_argument('--debug', {
+            action: 'store_true',
             help: 'Enable debugging.',
-            defaultValue: false
+            default: false
         });
-        parser.addArgument('--no-debug', {
-            nargs: 0,
-            action: 'storeFalse',
+        parser.add_argument('--no-debug', {
+            action: 'store_false',
             dest: 'debug',
             help: 'Disable debugging.',
         });

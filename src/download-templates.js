@@ -26,11 +26,11 @@ const StreamUtils = require('./lib/stream-utils');
 
 module.exports = {
     initArgparse(subparsers) {
-        const parser = subparsers.addParser('download-templates', {
-            addHelp: true,
+        const parser = subparsers.add_parser('download-templates', {
+            add_help: true,
             description: "Download primitive templates from Thingpedia."
         });
-        parser.addArgument(['-o', '--output'], {
+        parser.add_argument('-o', '--output', {
             required: true,
             type: fs.createWriteStream
         });

@@ -25,32 +25,31 @@ const FormData = require('form-data');
 
 module.exports = {
     initArgparse(subparsers) {
-        const parser = subparsers.addParser('upload-string-values', {
-            addHelp: true,
+        const parser = subparsers.add_parser('upload-string-values', {
+            add_help: true,
             description: "Upload a string value dataset to Thingpedia."
         });
-        parser.addArgument('input_file', {
+        parser.add_argument('input_file', {
             help: "The .tsv file of the string values to upload."
         });
-        parser.addArgument('--type-name', {
+        parser.add_argument('--type-name', {
             required: true,
             help: "The id (type) of the string dataset."
         });
-        parser.addArgument('--name', {
+        parser.add_argument('--name', {
             required: true,
             help: "The name of the string dataset."
         });
-        parser.addArgument('--license', {
+        parser.add_argument('--license', {
             required: false,
             choices: ['public-domain', 'free-permissive', 'free-copyleft', 'non-commercial', 'proprietary'],
-            defaultValue: "public-domain",
+            default: "public-domain",
             help: "The license of the string dataset."
         });
-        parser.addArgument('--preprocessed', {
-            nargs: 0,
-            action: 'storeTrue',
+        parser.add_argument('--preprocessed', {
+            action: 'store_true',
             help: 'If the values are already tokenized.',
-            defaultValue: false
+            default: false
         });
     },
 

@@ -42,26 +42,26 @@ const LICENSES = {
 
 module.exports = {
     initArgparse(subparsers) {
-        const parser = subparsers.addParser('init-project', {
-            addHelp: true,
+        const parser = subparsers.add_parser('init-project', {
+            add_help: true,
             description: "Initialize a repository to develop Thingpedia devices."
         });
-        parser.addArgument('--description', {
+        parser.add_argument('--description', {
             required: false,
-            defaultValue: '',
+            default: '',
             help: "A description for the repository"
         });
-        parser.addArgument('--author', {
+        parser.add_argument('--author', {
             required: false,
             help: "The name and email to use as the author and copyright owner"
         });
-        parser.addArgument('--license', {
+        parser.add_argument('--license', {
             required: false,
-            defaultValue: 'BSD-3-Clause',
+            default: 'BSD-3-Clause',
             choices: Object.keys(LICENSES),
             help: "The code license to use for the repository, as a SPDX identifier (defaults to BSD-3-Clause)"
         });
-        parser.addArgument('output_dir', {
+        parser.add_argument('output_dir', {
         });
     },
 

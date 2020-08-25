@@ -29,28 +29,28 @@ const mime = require('mime');
 
 module.exports = {
     initArgparse(subparsers) {
-        const parser = subparsers.addParser('upload-device', {
-            addHelp: true,
+        const parser = subparsers.add_parser('upload-device', {
+            add_help: true,
             description: "Upload a device to Thingpedia."
         });
-        parser.addArgument('--zipfile', {
+        parser.add_argument('--zipfile', {
             required: false,
             help: "ZIP file to upload."
         });
-        parser.addArgument('--icon', {
+        parser.add_argument('--icon', {
             required: false,
             help: "Icon file to upload."
         });
-        parser.addArgument('--manifest', {
+        parser.add_argument('--manifest', {
             required: true,
             help: "ThingTalk class definition file."
         });
-        parser.addArgument('--dataset', {
+        parser.add_argument('--dataset', {
             required: true,
             help: "ThingTalk dataset file with the class's primitive templates."
         });
-        parser.addArgument('--approve', {
-            action: 'storeTrue',
+        parser.add_argument('--approve', {
+            action: 'store_true',
             help: "Approve the device automatically (if possible)."
         });
     },

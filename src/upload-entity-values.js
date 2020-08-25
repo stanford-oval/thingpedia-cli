@@ -26,31 +26,30 @@ const csvstringify = require('csv-stringify');
 
 module.exports = {
     initArgparse(subparsers) {
-        const parser = subparsers.addParser('upload-entity-values', {
-            addHelp: true,
+        const parser = subparsers.add_parser('upload-entity-values', {
+            add_help: true,
             description: "Upload a new entity type to Thingpedia."
         });
-        parser.addArgument('--csv', {
+        parser.add_argument('--csv', {
             required: false,
             help: "The .csv file of the entity values to upload."
         });
-        parser.addArgument('--json', {
+        parser.add_argument('--json', {
             required: false,
             help: "The .json file of the entity values to upload"
         });
-        parser.addArgument('--entity-id', {
+        parser.add_argument('--entity-id', {
             required: true,
             help: "The id (type) of the string dataset."
         });
-        parser.addArgument('--entity-name', {
+        parser.add_argument('--entity-name', {
             required: true,
             help: "The name of the string dataset."
         });
-        parser.addArgument('--no-ner-support', {
-            nargs: 0,
-            action: 'storeTrue',
+        parser.add_argument('--no-ner-support', {
+            action: 'store_true',
             help: 'If this entity is an opaque identifier that cannot be used from natural language.',
-            defaultValue: false
+            default: false
         });
     },
 

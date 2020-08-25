@@ -54,34 +54,38 @@ async function main() {
     I18n.init();
 
     const parser = new argparse.ArgumentParser({
-        addHelp: true,
+        add_help: true,
         description: I18n._("A tool to interact with the Thingpedia open API repository.")
     });
 
-    parser.addArgument('--url', {
+    parser.add_argument('--url', {
         required: false,
         dest: 'thingpedia_url',
         help: `Base URL of Thingpedia server to contact; defaults to as configured in git, or ${DEFAULT_THINGPEDIA_URL}`
     });
-    parser.addArgument(['-l', '--locale'], {
+    parser.add_argument('-l', '--locale', {
         required: false,
-        defaultValue: 'en-US',
+        default: 'en-US',
         help: `BGP 47 tag of the locale to use when querying Thingpedia`
     });
-    parser.addArgument('--developer-key', {
+    parser.add_argument('--developer-key', {
         required: false,
         help: `Developer key to use when contacting Thingpedia`
     });
-    parser.addArgument('--access-token', {
+    parser.add_argument('--access-token', {
         required: false,
         help: `OAuth access token to use when contacting Thingpedia`
     });
 
-    const subparsers = parser.addSubparsers({ title: 'Available sub-commands', dest: 'subcommand' });
+    const subparsers = parser.add_subparsers({
+        title: 'Available sub-commands',
+        dest: 'subcommand',
+        required: true
+    });
     for (let subcommand in subcommands)
         subcommands[subcommand].initArgparse(subparsers);
 
-    const args = parser.parseArgs();
+    const args = parser.parse_args();
     if (!args.thingpedia_url)
         args.thingpedia_url = await Config.get('thingpedia.url', process.env.THINGPEDIA_URL || DEFAULT_THINGPEDIA_URL);
     if (!args.developer_key)

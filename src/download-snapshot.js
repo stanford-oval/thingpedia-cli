@@ -26,17 +26,17 @@ const StreamUtils = require('./lib/stream-utils');
 
 module.exports = {
     initArgparse(subparsers) {
-        const parser = subparsers.addParser('download-snapshot', {
-            addHelp: true,
+        const parser = subparsers.add_parser('download-snapshot', {
+            add_help: true,
             description: "Download a snapshot of Thingpedia."
         });
-        parser.addArgument(['-o', '--output'], {
+        parser.add_argument('-o', '--output', {
             required: true,
             type: fs.createWriteStream
         });
-        parser.addArgument('--snapshot', {
+        parser.add_argument('--snapshot', {
             required: false,
-            defaultValue: '-1',
+            default: '-1',
             help: `identifier of the Thingpedia snapshot to download (or -1 for the latest snapshot)`
         });
     },
