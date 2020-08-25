@@ -244,15 +244,15 @@ function validateInvocation(kind, where, what, entities, stringTypes, options = 
 
 module.exports = {
     initArgparse(subparsers) {
-        const parser = subparsers.addParser('lint-device', {
-            addHelp: true,
+        const parser = subparsers.add_parser('lint-device', {
+            add_help: true,
             description: "Check the manifest for a Thingpedia device."
         });
-        parser.addArgument('--manifest', {
+        parser.add_argument('--manifest', {
             required: true,
             help: "ThingTalk class definition file."
         });
-        parser.addArgument('--dataset', {
+        parser.add_argument('--dataset', {
             required: true,
             help: "ThingTalk dataset file with the class's primitive templates."
         });

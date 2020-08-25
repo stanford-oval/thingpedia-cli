@@ -27,16 +27,16 @@ const { execCommand } = require('./lib/process-utils');
 
 module.exports = {
     initArgparse(subparsers) {
-        const parser = subparsers.addParser('init-device', {
-            addHelp: true,
+        const parser = subparsers.add_parser('init-device', {
+            add_help: true,
             description: "Initialize the skeleton for a new Thingpedia device."
         });
-        parser.addArgument('--loader', {
+        parser.add_argument('--loader', {
             required: false,
-            defaultValue: 'org.thingpedia.v2',
+            default: 'org.thingpedia.v2',
             help: "The loader to use for the new device (defaults to org.thingpedia.v2)"
         });
-        parser.addArgument('name', {
+        parser.add_argument('name', {
             help: "The name (unique ID) of the new device, in reverse-DNS notation (e.g. com.example.foo)"
         });
     },
