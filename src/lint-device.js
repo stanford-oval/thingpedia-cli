@@ -26,9 +26,9 @@ const util = require('util');
 
 const { splitParams } = require('./lib/tokenize');
 
-const ALLOWED_ARG_METADATA = new Set(['canonical', 'prompt']);
-const ALLOWED_FUNCTION_METADATA = new Set(['canonical', 'confirmation', 'confirmation_remote', 'formatted']);
-const ALLOWED_CLASS_METADATA = new Set(['name', 'description', 'thingpedia_name', 'thingpedia_description']);
+const ALLOWED_ARG_METADATA = new Set(['canonical', 'prompt', 'counted_object', 'question']);
+const ALLOWED_FUNCTION_METADATA = new Set(['canonical', 'confirmation', 'confirmation_remote', 'formatted', 'result', 'on_error']);
+const ALLOWED_CLASS_METADATA = new Set(['name', 'description', 'thingpedia_name', 'thingpedia_description', 'canonical']);
 const SUBCATEGORIES = new Set(['service','media','social-network','communication','home','health','data-management']);
 
 function warning(msg) {
@@ -205,13 +205,15 @@ function validateInvocation(kind, where, what, entities, stringTypes, options = 
 
         validateMetadata(fndef.metadata, ALLOWED_FUNCTION_METADATA);
 
-        if (fndef.metadata.canonical && fndef.metadata.canonical.indexOf('$') >= 0)
-            warning(`Detected placeholder in canonical form for ${name}: this is incorrect, the canonical form must not contain parameters`);
         if (!fndef.metadata.confirmation)
             warning(`Missing confirmation for ${name}`);
         if (fndef.annotations.confirm) {
-            if (!where[name].annotations.confirm.isBoolean)
+            if (fndef.annotations.confirm.isEnum) {
+                if (!['confirm', 'auto', 'display_result'].includes(fndef.annotations.confirm.toJS()))
+                    error(`Invalid #[confirm] annotation for ${name}, must be a an enum "confirm", "auto", "display_result"`);
+            } else if (!where[name].annotations.confirm.isBoolean) {
                 error(`Invalid #[confirm] annotation for ${name}, must be a Boolean`);
+            }
         }
         if (options.checkPollInterval && what === 'query' && where[name].is_monitorable) {
             if (!fndef.annotations.poll_interval)

@@ -22,8 +22,8 @@
 const ThingTalk = require('thingtalk');
 const Tp = require('thingpedia');
 const fs = require('fs');
+const pfs = fs.promises;
 const path = require('path');
-const util = require('util');
 const FormData = require('form-data');
 const mime = require('mime');
 
@@ -49,6 +49,10 @@ module.exports = {
             required: true,
             help: "ThingTalk dataset file with the class's primitive templates."
         });
+        parser.add_argument('--secrets', {
+            required: false,
+            help: "JSON file containing secret data for the class configuration mixins."
+        });
         parser.add_argument('--approve', {
             action: 'store_true',
             help: "Approve the device automatically (if possible)."
@@ -59,7 +63,7 @@ module.exports = {
         if (!args.access_token)
             throw new Error(`You must pass a valid OAuth access token to talk to Thingpedia`);
 
-        const manifest = await util.promisify(fs.readFile)(args.manifest, { encoding: 'utf8' });
+        let manifest = await pfs.readFile(args.manifest, { encoding: 'utf8' });
         let parsed;
         try {
             parsed = ThingTalk.Grammar.parse(manifest);
@@ -103,9 +107,36 @@ module.exports = {
                 fd.append(annot, classDef.annotations[annot].toJS());
         }
 
-        const dataset = await util.promisify(fs.readFile)(args.dataset, { encoding: 'utf8' });
+        const dataset = await pfs.readFile(args.dataset, { encoding: 'utf8' });
         // sanitiy check it locally
         ThingTalk.Grammar.parse(dataset);
+
+        if (args.secrets) {
+            let secretfile;
+            try {
+                secretfile = await pfs.readFile(args.secrets, { encoding: 'utf8' });
+            } catch(e) {
+                // ignore if the file does not exist, even if the argument is specified
+                // this helps with scripting through all devices
+                if (e.code !== 'ENOENT')
+                    throw e;
+                console.log('WARNING: --secrets file does not exist, ignored');
+            }
+            if (secretfile) {
+                const secrets = JSON.parse(secretfile);
+
+                for (let importstmt of classDef.imports) {
+                    for (let param of importstmt.in_params) {
+                        if (param.value.isUndefined && secrets[param.name])
+                            param.value = new ThingTalk.Ast.Value.String(secrets[param.name]);
+                    }
+                }
+
+                // override the manifest with the prettyprinted class
+                // this unfortunately discards any comment or source formatting in the manifest
+                manifest = classDef.prettyprint();
+            }
+        }
 
         fd.append('code', manifest);
         fd.append('dataset', dataset);
