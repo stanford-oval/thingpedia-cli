@@ -26,15 +26,15 @@ const util = require('util');
 
 async function get(key, _default) {
     try {
-        const args = ['config', '--get', '--default', _default || '', key];
+        const args = ['config', '--get', key];
         const { stdout, stderr } = await util.promisify(child_process.execFile)('git', args);
         process.stderr.write(stderr);
         return stdout.trim() || _default;
     } catch(e) {
         // ignore error if git is not installed
-        if (e.code !== 'ENOENT')
+        // also ignore error if the key is not present
+        if (e.code !== 'ENOENT' && e.code !== 1)
             throw e;
-        // also ignore error if the key
         return _default;
     }
 }
