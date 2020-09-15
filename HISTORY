@@ -1,3 +1,9 @@
+0.5.0
+=====
+
+* Improved compatibility with old versions of git [#51].
+* Updated dependencies [#52].
+
 0.5.0-rc.1
 ==========
 
