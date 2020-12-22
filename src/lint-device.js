@@ -48,13 +48,31 @@ function validateMetadata(metadata, allowed) {
     }
 }
 
+function parseNewOrOldSyntax(code) {
+    try {
+        return ThingTalk.Syntax.parse(code);
+    } catch(e1) {
+        if (e1.name !== 'SyntaxError')
+            throw e1;
+        try {
+            const parsed = ThingTalk.Syntax.parse(code, ThingTalk.Syntax.SyntaxType.Legacy);
+            warning('WARNING: manifest.tt and dataset.tt use legacy syntax, you should migrate to ThingTalk 2.0');
+            return parsed;
+        } catch(e2) {
+            if (e2.name !== 'SyntaxError')
+                throw e2;
+            throw e1;
+        }
+    }
+}
+
 async function loadClassDef(args, classCode, datasetCode) {
     const tpClient = new Tp.HttpClient({ getDeveloperKey() { return args.developer_key; } });
     const schemaRetriever = new ThingTalk.SchemaRetriever(tpClient, null, true);
 
     let parsed;
     try {
-        parsed = await ThingTalk.Grammar.parseAndTypecheck(`${classCode}\n${datasetCode}`, schemaRetriever, true);
+        parsed = await parseNewOrOldSyntax(`${classCode}\n${datasetCode}`).typecheck(schemaRetriever, true);
     } catch(e) {
         if (e.name === 'SyntaxError' && e.location) {
             let lineNumber = e.location.start.line;
@@ -70,7 +88,7 @@ async function loadClassDef(args, classCode, datasetCode) {
         }
     }
 
-    if (!parsed.isMeta || parsed.classes.length !== 1)
+    if (!(parsed instanceof ThingTalk.Ast.Library) || parsed.classes.length !== 1)
         throw new Error("Invalid manifest file: must contain exactly one class, with the same identifier as the device");
     const classDef = parsed.classes[0];
 
@@ -79,7 +97,7 @@ async function loadClassDef(args, classCode, datasetCode) {
     if (parsed.datasets.length > 0 && parsed.datasets[0].language !== 'en')
         error("The dataset must be for English: use `en` as the language tag.");
     const dataset = parsed.datasets.length > 0 ? parsed.datasets[0] :
-        new ThingTalk.Ast.Dataset(null, '@' + parsed.classes[0].kind, 'en', [], {});
+        new ThingTalk.Ast.Dataset(null, parsed.classes[0].kind, 'en', [], {});
 
     return [classDef, dataset];
 }
@@ -121,14 +139,9 @@ function validateDataset(dataset, kind) {
     const names = new Set;
     dataset.examples.forEach((ex, i) => {
         try {
-            let ruleprog = ex.toProgram();
-
-            // try and convert to NN
-            ThingTalk.NNSyntax.toNN(ruleprog, {});
-
             let foundOurDevice = false;
             for (let [, prim] of ex.iteratePrimitives()) {
-                if (prim.selector.isDevice && prim.selector.kind === kind) {
+                if (prim.selector.kind === kind) {
                     foundOurDevice = true;
                     break;
                 }
@@ -145,13 +158,14 @@ function validateDataset(dataset, kind) {
             }
 
             if (ex.annotations.name) {
-                if (typeof ex.annotations.name !== 'string')
+                const name = ex.annotations.name.toJS();
+                if (typeof name !== 'string')
                     throw new Error(`invalid #[name] annotation (must be a string)`);
-                if (ex.annotations.name.length > 128)
+                if (name.length > 128)
                     throw new Error(`the #[name] annotation must be at most 128 characters`);
-                if (names.has(ex.annotations.name))
+                if (names.has(name))
                     throw new Error(`duplicate name`);
-                names.add(ex.annotations.name);
+                names.add(name);
             }
 
             for (let utterance of ex.utterances)
