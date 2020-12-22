@@ -92,10 +92,8 @@ async function loadClassDef(args, classCode, datasetCode) {
         throw new Error("Invalid manifest file: must contain exactly one class, with the same identifier as the device");
     const classDef = parsed.classes[0];
 
-    if (parsed.datasets.length > 1 || (parsed.datasets.length > 0 && parsed.datasets[0].name !== '@' + parsed.classes[0].kind))
+    if (parsed.datasets.length > 1 || (parsed.datasets.length > 0 && parsed.datasets[0].name !== parsed.classes[0].kind))
         error("Invalid dataset file: must contain exactly one dataset, with the same identifier as the class");
-    if (parsed.datasets.length > 0 && parsed.datasets[0].language !== 'en')
-        error("The dataset must be for English: use `en` as the language tag.");
     const dataset = parsed.datasets.length > 0 ? parsed.datasets[0] :
         new ThingTalk.Ast.Dataset(null, parsed.classes[0].kind, 'en', [], {});
 
