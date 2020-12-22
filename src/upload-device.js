@@ -66,11 +66,11 @@ module.exports = {
         let manifest = await pfs.readFile(args.manifest, { encoding: 'utf8' });
         let parsed;
         try {
-            parsed = ThingTalk.Grammar.parse(manifest);
+            parsed = ThingTalk.Syntax.parse(manifest);
         } catch(e) {
             throw new Error(`Error parsing manifest.tt: ${e.message}`);
         }
-        if (!parsed.isLibrary || parsed.classes.length !== 1)
+        if (!(parsed instanceof ThingTalk.Ast.Library) || parsed.classes.length !== 1)
             throw new Error(`The manifest file must contain exactly one class definition`);
 
         const classDef = parsed.classes[0];
@@ -107,9 +107,22 @@ module.exports = {
                 fd.append(annot, classDef.annotations[annot].toJS());
         }
 
-        const dataset = await pfs.readFile(args.dataset, { encoding: 'utf8' });
+        let dataset = await pfs.readFile(args.dataset, { encoding: 'utf8' });
         // sanitiy check it locally
-        ThingTalk.Grammar.parse(dataset);
+        try {
+            ThingTalk.Syntax.parse(dataset);
+        } catch(e1) {
+            if (e1.name !== 'SyntaxError')
+                throw e1;
+            try {
+                ThingTalk.Syntax.parse(dataset, ThingTalk.Syntax.SyntaxType.Legacy);
+                console.log('WARNING: dataset.tt uses legacy syntax, you should migrate to ThingTalk 2.0');
+            } catch(e2) {
+                if (e2.name !== 'SyntaxError')
+                    throw e2;
+                throw e1;
+            }
+        }
 
         if (args.secrets) {
             let secretfile;
@@ -153,10 +166,7 @@ module.exports = {
         }
         await Tp.Helpers.Http.postStream(args.thingpedia_url + '/api/v3/devices/create', fd, {
             dataContentType:  'multipart/form-data; boundary=' + fd.getBoundary(),
-            extraHeaders: {
-                Authorization: 'Bearer ' + args.access_token
-            },
-            useOAuth2: true
+            auth: 'Bearer ' + args.access_token
         });
 
         console.log('Success!');
