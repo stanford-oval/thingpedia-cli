@@ -1,6 +1,6 @@
 # Thingpedia Command Line Tools
 
-[![Build Status](https://travis-ci.com/stanford-oval/thingpedia-cli.svg?branch=master)](https://travis-ci.com/stanford-oval/thingpedia-cli) [![Coverage Status](https://coveralls.io/repos/github/stanford-oval/thingpedia-cli/badge.svg?branch=master)](https://coveralls.io/github/stanford-oval/thingpedia-cli?branch=master) [![Dependency Status](https://david-dm.org/stanford-oval/thingpedia-cli/status.svg)](https://david-dm.org/stanford-oval/thingpedia-cli) [![Greenkeeper badge](https://badges.greenkeeper.io/stanford-oval/thingpedia-cli.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.com/stanford-oval/thingpedia-cli.svg?branch=master)](https://travis-ci.com/stanford-oval/thingpedia-cli) [![Coverage Status](https://coveralls.io/repos/github/stanford-oval/thingpedia-cli/badge.svg?branch=master)](https://coveralls.io/github/stanford-oval/thingpedia-cli?branch=master) [![Dependency Status](https://david-dm.org/stanford-oval/thingpedia-cli/status.svg)](https://david-dm.org/stanford-oval/thingpedia-cli)
 
 ## An Open, Crowdsourced Repository of APIs
 
@@ -11,22 +11,18 @@ This package contains a command line tool to interact with Thingpedia.
 The tool helps with creating new devices, packing them for publication,
 and using the Thingpedia APIs.
 
-Thingpedia and Almond are research projects led by prof. Monica Lam,
-from Stanford University.  You can find more information at
-<https://almond.stanford.edu>.
+ThingTalk is developed by the Stanford Open Virtual Assistant Lab, a research
+initiative led by prof. Monica Lam, from Stanford University. 
+You can find more information at <https://oval.cs.stanford.edu>.
 
 ## Installation
 
 To install this tool, run:
 ```bash
-yarn global add thingpedia-cli
+npm install -g thingpedia-cli
 ```
 
 The resulting command will be called `thingpedia`.
-
-If encounter `command not found`, make sure the Yarn global bin directory
-(usually `~/.yarn/bin`) is in your PATH. You can find the path with the command
-`yarn global bin`.
 
 ## Documentation
 
@@ -57,7 +53,7 @@ This will initialize a new empty manifest and JavaScript package.
 
 You or your contributors can test the new device with
 ```
-yarn test com.example.myawesomedevice
+npm run test -- com.example.myawesomedevice
 ```
 and package it for upload to Thingpedia with
 ```
