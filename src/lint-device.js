@@ -27,7 +27,7 @@ const util = require('util');
 const { splitParams } = require('./lib/tokenize');
 
 const ALLOWED_ARG_METADATA = new Set(['canonical', 'prompt', 'counted_object', 'question']);
-const ALLOWED_FUNCTION_METADATA = new Set(['canonical', 'confirmation', 'confirmation_remote', 'formatted', 'result', 'on_error']);
+const ALLOWED_FUNCTION_METADATA = new Set(['canonical', 'canonical_short', 'confirmation', 'confirmation_remote', 'formatted', 'result', 'on_error']);
 const ALLOWED_CLASS_METADATA = new Set(['name', 'description', 'thingpedia_name', 'thingpedia_description', 'canonical']);
 const SUBCATEGORIES = new Set(['service','media','social-network','communication','home','health','data-management']);
 
