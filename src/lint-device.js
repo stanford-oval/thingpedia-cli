@@ -217,8 +217,6 @@ function validateInvocation(kind, where, what, entities, stringTypes, options = 
 
         validateMetadata(fndef.metadata, ALLOWED_FUNCTION_METADATA);
 
-        if (!fndef.metadata.confirmation)
-            warning(`Missing confirmation for ${name}`);
         if (fndef.annotations.confirm) {
             if (fndef.annotations.confirm.isEnum) {
                 if (!['confirm', 'auto', 'display_result'].includes(fndef.annotations.confirm.toJS()))
