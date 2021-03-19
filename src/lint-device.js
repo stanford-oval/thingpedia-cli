@@ -28,7 +28,7 @@ const { splitParams } = require('./lib/tokenize');
 
 const ALLOWED_ARG_METADATA = new Set(['canonical', 'prompt', 'counted_object', 'question']);
 const ALLOWED_FUNCTION_METADATA = new Set(['canonical', 'canonical_short', 'confirmation', 'confirmation_remote', 'formatted', 'result', 'on_error']);
-const ALLOWED_CLASS_METADATA = new Set(['name', 'description', 'thingpedia_name', 'thingpedia_description', 'canonical']);
+const ALLOWED_CLASS_METADATA = new Set(['name', 'description', 'thingpedia_name', 'thingpedia_description', 'canonical', 'help']);
 const SUBCATEGORIES = new Set(['service','media','social-network','communication','home','health','data-management']);
 
 function warning(msg) {
@@ -66,8 +66,38 @@ function parseNewOrOldSyntax(code) {
     }
 }
 
+class SimplePlatform extends Tp.BasePlatform {
+    constructor(developerKey) {
+        super();
+        this._developerKey = developerKey;
+        this._prefs = new Tp.Helpers.MemoryPreferences();
+    }
+    get type() {
+        return 'simple';
+    }
+    get locale() {
+        return 'en-US';
+    }
+    get timezone() {
+        return 'America/Los_Angeles';
+    }
+    hasCapability() {
+        return false;
+    }
+    getCapability() {
+        return null;
+    }
+    getSharedPreferences() {
+        return this._prefs;
+    }
+    getDeveloperKey() {
+        return this._developerKey;
+    }
+}
+
+
 async function loadClassDef(args, classCode, datasetCode) {
-    const tpClient = new Tp.HttpClient({ getDeveloperKey() { return args.developer_key; } });
+    const tpClient = new Tp.HttpClient(new SimplePlatform(args.developer_key), args.thingpedia_url);
     const schemaRetriever = new ThingTalk.SchemaRetriever(tpClient, null, true);
 
     let parsed;
