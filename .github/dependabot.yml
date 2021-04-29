@@ -1,0 +1,19 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: monthly
+    time: "13:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: csv-stringify
+    versions:
+    - 5.6.0
+    - 5.6.1
+  - dependency-name: eslint
+    versions:
+    - 7.19.0
+  - dependency-name: mime
+    versions:
+    - 2.5.0
